@@ -1,0 +1,10 @@
+bin/
+vendor/
+*.exe
+*.out
+*.o
+*.a
+*.so
+*.dll
+*.dylib
+
