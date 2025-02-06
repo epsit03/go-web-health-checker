@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-start: #71d0ff;
+  --background-end: #274597;
+  --foreground: #f1f5f9;
+  --accent: #4f46e5;
+  --success: #22c55e;
+  --error: #ef4444;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--foreground);
+  background: linear-gradient(to bottom right, var(--background-start), var(--background-end));
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-container {
+  display: flex;
+}
+
+.web-health-checker {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 1.5rem;
+  width: 24rem;
+}
+
+.web-health-checker h1 {
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.web-health-checker input {
+  border: 1px solid var(--background-start);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.web-health-checker input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
+}
+
+.web-health-checker button {
+  background-color: var(--accent);
+  color: var(--foreground);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.web-health-checker button:hover {
+  background-color: #4338ca;
+}
+
+.web-health-checker button:disabled {
+  background-color: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.web-health-checker .status.success {
+  color: var(--success);
+}
+
+.web-health-checker .status.error {
+  color: var(--error);
+}
