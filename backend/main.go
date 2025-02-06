@@ -53,7 +53,7 @@ func main() {
 
 	// Enable CORS
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"localhost:3000"}, // No trailing '/'
+		AllowedOrigins:   []string{"https://go-web-health-checker.vercel.app"}, // No trailing '/'
 		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
 		AllowedHeaders:   []string{"Content-Type"},
 		AllowCredentials: true,
