@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Network, Wifi, WifiOff, Zap } from "lucide-react";
+import { Network, Zap, CheckCircle, XCircle } from "lucide-react";
 
 export default function WebHealthChecker() {
   const [url, setUrl] = useState("");
@@ -12,7 +12,7 @@ export default function WebHealthChecker() {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<"success" | "error" | null>(null);
-  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  // const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const checkHealth = async () => {
     setLoading(true);
@@ -20,12 +20,12 @@ export default function WebHealthChecker() {
     setResult(null);
 
     try {
-      const response = await fetch(`https://${API_URL}/api/check?url=${url}&port=${port}`);
+      const response = await fetch(`https://localhost:8080/api/check?url=${url}&port=${port}`);
       const data = await response.json();
       setStatus(data.status);
       setResult(data.status.toLowerCase().includes("up") ? "success" : "error");
     } catch (error) {
-      setStatus(`Error checking status: ${error instanceof Error ? error.message : "Unknown error"}`);
+      setStatus(`Error: ${error instanceof Error ? error.message : "Unknown error"}`);
       setResult("error");
     }
 
@@ -33,62 +33,57 @@ export default function WebHealthChecker() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-400 to-purple-600">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="web-health-checker"
+        className="w-full max-w-md bg-white/20 backdrop-blur-lg shadow-lg rounded-2xl p-6"
       >
         <motion.h1
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
+          className="text-xl font-bold text-white flex items-center justify-center mb-4"
         >
-          <Network className="mr-2" />
+          <Network className="mr-2 text-white" />
           Web Health Checker
         </motion.h1>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
+        <div className="space-y-4">
           <Input
             type="text"
             placeholder="Enter website URL"
+            className="p-3 text-lg rounded-lg"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
           />
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
           <Input
             type="text"
             placeholder="Port (default 80)"
+            className="p-3 text-lg rounded-lg"
             value={port}
             onChange={(e) => setPort(e.target.value)}
           />
-        </motion.div>
 
-        <Button
-          onClick={checkHealth}
-          disabled={loading}
-          className={`w-full ${loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"} transition-colors duration-300`}
-        >
-          {loading ? (
-            <div className="flex items-center">
-              <Zap className="mr-2 animate-spin" />
-              Checking...
-            </div>
-          ) : (
-            "Check Health"
-          )}
-        </Button>
+          <Button
+            onClick={checkHealth}
+            disabled={loading}
+            className={`w-full p-3 text-lg rounded-lg transition-all duration-300 ${
+              loading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
+            }`}
+          >
+            {loading ? (
+              <div className="flex items-center">
+                <Zap className="mr-2 animate-spin" />
+                Checking...
+              </div>
+            ) : (
+              "Check Health"
+            )}
+          </Button>
+        </div>
       </motion.div>
 
       <AnimatePresence>
@@ -98,15 +93,16 @@ export default function WebHealthChecker() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="status-container mt-4 max-w-md w-full"
+            transition={{ duration: 0.5 }}
+            className="mt-6 max-w-lg w-full p-4 rounded-xl shadow-lg bg-white/30 backdrop-blur-lg text-white text-lg"
           >
-            <div
-              className={`status text-center font-semibold text-lg flex items-center justify-center ${
-                result === "success" ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {result === "success" ? <Wifi className="mr-2" /> : <WifiOff className="mr-2" />}
-              {status}
+            <div className="flex items-center space-x-3">
+              {result === "success" ? (
+                <CheckCircle className="text-green-400" size={28} />
+              ) : (
+                <XCircle className="text-red-400" size={28} />
+              )}
+              <span className="font-medium">{status}</span>
             </div>
           </motion.div>
         )}
