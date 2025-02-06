@@ -12,7 +12,7 @@ export default function WebHealthChecker() {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<"success" | "error" | null>(null);
-  // const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const checkHealth = async () => {
     setLoading(true);
@@ -20,7 +20,7 @@ export default function WebHealthChecker() {
     setResult(null);
 
     try {
-      const response = await fetch(`https://localhost:8080/api/check?url=${url}&port=${port}`);
+      const response = await fetch(`https://${API_URL}/api/check?url=${url}&port=${port}`);
       const data = await response.json();
       setStatus(data.status);
       setResult(data.status.toLowerCase().includes("up") ? "success" : "error");
